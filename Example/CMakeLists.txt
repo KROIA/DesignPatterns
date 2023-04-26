@@ -1,0 +1,3 @@
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Example")
+add_subdirectory(Info)
