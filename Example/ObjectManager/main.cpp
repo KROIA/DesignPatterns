@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 	o2_2 = nullptr;
 	if (manager.exists(id))
 	{
-		cout << "id: " << id << " still exists, but shuld be removed";
+		cout << "id: " << id << " still exists, but should be removed";
 	}
 	cout << "Object count: " << manager.getObjectCount() << "\n";
 	o2_3->freeFromManager();
@@ -66,11 +66,11 @@ int main(int argc, char* argv[])
 	DesignPatterns::Object* o2_4 = new DesignPatterns::Object(5);
 	if (!manager.addObject(o2_4))
 	{
-		cout << "Shuld be added \n";
+		cout << "should be added \n";
 	}
 	if (manager.addObject(o2_4))
 	{
-		cout << "Shuld not be added \n";
+		cout << "should not be added \n";
 	}
 	cout << "Object count: " << manager.getObjectCount() << "\n";
 
@@ -128,27 +128,55 @@ bool test_getObjects()
 }
 bool test_removeObject()
 {
-	DesignPatterns::ObjectManager manager;
+	Object2* o2_1 = nullptr;
+	Object2* o2_2 = nullptr;
+	Object2* o2_3 = nullptr;
+	{
+		DesignPatterns::ObjectManager manager;
 
-	Object1* o1_1 = new Object1(manager, 1);
-	Object1* o1_2 = new Object1(manager, 2);
-	Object1* o1_3 = new Object1(manager, 3);
+		Object1* o1_1 = new Object1(manager, 1);
+		Object1* o1_2 = new Object1(manager, 2);
+		Object1* o1_3 = new Object1(manager, 3);
 
-	Object2* o2_1 = new Object2(manager, "O1");
-	Object2* o2_2 = new Object2(manager, "O2");
-	Object2* o2_3 = new Object2(manager, "O3");
+		o2_1 = new Object2(manager, "O1");
+		o2_2 = new Object2(manager, "O2");
+		o2_3 = new Object2(manager, "O3");
 
-	ASSERT_NEQUAL(manager.getObjectCount(), 6, "");
-	ASSERT_FALSE(manager.removeObject(o1_1->getID()), "Object shuld be in manager, ready to be removed");
-	ASSERT_NEQUAL(manager.getObjectCount(), 5, "");
-	ASSERT_TRUE(manager.removeObject(o1_1->getID()), "Object shuld be already removed");
-	ASSERT_NEQUAL(manager.getObjectCount(), 5, "");
+		ASSERT_NEQUAL(manager.getObjectCount(), 6, "");
+		ASSERT_FALSE(manager.removeObject(o1_1->getID()), "Object should be in manager, ready to be removed");
+		ASSERT_NEQUAL(manager.getObjectCount(), 5, "");
+		ASSERT_TRUE(manager.removeObject(o1_1->getID()), "Object should be already removed");
+		ASSERT_NEQUAL(manager.getObjectCount(), 5, "");
 
-	ASSERT_NEQUAL(o1_2, manager.getObject(o1_2->getID()), "");
-	ASSERT_NEQUAL(o1_3, manager.getObject(o1_3->getID()), "");
-	ASSERT_NEQUAL(o2_3, manager.getObject(o2_3->getID()), "");
-	ASSERT_FALSE(manager.exists(o2_3->getID()), "");
-	ASSERT_FALSE(manager.exists(o2_1->getID()), "");
+		size_t id = o1_2->getID();
+		ASSERT_FALSE(manager.removeObject(id), "");
+		delete o1_2;
+		o1_2 = nullptr;
+		ASSERT_TRUE(manager.removeObject(id), "should be removed because the object got destroyed");
+		ASSERT_NEQUAL(manager.getObjectCount(), 4, "");
+
+		ASSERT_NEQUAL(o2_1->getManager(), &manager, "");
+		ASSERT_NEQUAL(o2_2->getManager(), &manager, "");
+		ASSERT_NEQUAL(o2_3->getManager(), &manager, "");
+		manager.clear();
+		ASSERT_NEQUAL(manager.getObjectCount(), 0, "Manager should be cleared");
+		ASSERT_NEQUAL(o2_1->getManager(), nullptr, "Manager should be set to nullptr");
+		ASSERT_NEQUAL(o2_2->getManager(), nullptr, "Manager should be set to nullptr");
+		ASSERT_NEQUAL(o2_3->getManager(), nullptr, "Manager should be set to nullptr");
+
+		ASSERT_FALSE(manager.addObject(o2_1), "");
+		ASSERT_FALSE(manager.addObject(o2_2), "");
+		ASSERT_FALSE(manager.addObject(o2_3), "");
+
+		ASSERT_NEQUAL(o2_1->getManager(), &manager, "");
+		ASSERT_NEQUAL(o2_2->getManager(), &manager, "");
+		ASSERT_NEQUAL(o2_3->getManager(), &manager, "");
+	}
+	ASSERT_NEQUAL(o2_1->getManager(), nullptr, "Manager should be set to nullptr");
+	ASSERT_NEQUAL(o2_2->getManager(), nullptr, "Manager should be set to nullptr");
+	ASSERT_NEQUAL(o2_3->getManager(), nullptr, "Manager should be set to nullptr");
+
+
 	return true;
 }
 bool test_doubleInsert()

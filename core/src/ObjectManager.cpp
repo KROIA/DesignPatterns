@@ -9,7 +9,7 @@ namespace DesignPatterns
     {}
     ObjectManager::~ObjectManager()
     {
-
+        clear();
     }
 
     size_t ObjectManager::generateID() 

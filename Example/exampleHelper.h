@@ -47,6 +47,8 @@ namespace UnitTest
 		const std::string white = "\033[0m";
 	};
 
+#define FILESOURCE std::string(std::string(__FILE__)+"\nLine: "+std::to_string(__LINE__)+"  ")
+
 	// Asserts the test with a message
 #define ASSERT(msg) \
 	UnitTest::printLn(msg, UnitTest::Color::red); \
@@ -56,7 +58,10 @@ namespace UnitTest
 #define ASSERT_EQUAL(a, b, msg) \
 	if((a) == (b)) \
 	{ \
-		UnitTest::printLn(std::string(#a " must be equal to "#b"\n")+ msg, UnitTest::Color::red); \
+		UnitTest::printLn(FILESOURCE, UnitTest::Color::yellow); \
+		UnitTest::printLn("    "+std::string(#a " must be equal to "#b), UnitTest::Color::red); \
+		if(std::string(msg).length() > 0) \
+			UnitTest::printLn("    "+std::string(msg), UnitTest::Color::yellow); \
 		return false; \
 	}
 
@@ -64,7 +69,10 @@ namespace UnitTest
 #define ASSERT_NEQUAL(a, b, msg) \
 	if((a) != (b)) \
 	{ \
-		UnitTest::printLn(std::string(#a " must not be equal to "#b"\n")+ msg, UnitTest::Color::red); \
+		UnitTest::printLn(FILESOURCE, UnitTest::Color::yellow); \
+		UnitTest::printLn("    "+std::string(#a " must not be equal to "#b), UnitTest::Color::red); \
+		if(std::string(msg).length() > 0) \
+			UnitTest::printLn("    "+std::string(msg), UnitTest::Color::yellow); \
 		return false; \
 	}
 
@@ -72,7 +80,10 @@ namespace UnitTest
 #define ASSERT_TRUE(check, msg) \
 	if(check) \
 	{ \
-		UnitTest::printLn(std::string(#check " shuld not be true\n")+msg, UnitTest::Color::red); \
+		UnitTest::printLn(FILESOURCE, UnitTest::Color::yellow); \
+		UnitTest::printLn("    "+std::string(#check " shuld not be true\n"), UnitTest::Color::red); \
+		if(std::string(msg).length() > 0) \
+			UnitTest::printLn("    "+std::string(msg), UnitTest::Color::yellow); \
 		return false; \
 	} 
 
@@ -80,7 +91,10 @@ namespace UnitTest
 #define ASSERT_FALSE(check, msg) \
 	if(!check) \
 	{ \
-		UnitTest::printLn(std::string(#check " shuld not be false\n")+msg, UnitTest::Color::red); \
+		UnitTest::printLn(FILESOURCE, UnitTest::Color::yellow); \
+		UnitTest::printLn("    "+std::string(#check " shuld not be false\n"), UnitTest::Color::red); \
+		if(std::string(msg).length() > 0) \
+			UnitTest::printLn("    "+std::string(msg), UnitTest::Color::yellow); \
 		return false; \
 	} 
 
@@ -102,12 +116,14 @@ namespace UnitTest
 		UnitTest::Result::fails++; \
 		UnitTest::print(">>    Test " + std::string(#func"("#__VA_ARGS__")")); \
 		UnitTest::printLn("   [FAIL]", UnitTest::Color::red); \
-		UnitTest::printLn(std::string("   Exception: ")+e.what(), UnitTest::Color::red); \
+		UnitTest::printLn(FILESOURCE, UnitTest::Color::yellow); \
+		UnitTest::printLn("    "+std::string("   Exception: ")+e.what(), UnitTest::Color::red); \
 	} catch(...) { \
 		UnitTest::Result::fails++; \
 		UnitTest::print(">>    Test " + std::string(#func"("#__VA_ARGS__")")); \
 		UnitTest::printLn("   [FAIL]", UnitTest::Color::red); \
-		UnitTest::printLn(std::string("   Exception: unknown"), UnitTest::Color::red); \
+		UnitTest::printLn(FILESOURCE, UnitTest::Color::yellow); \
+		UnitTest::printLn("    "+std::string("   Exception: unknown"), UnitTest::Color::red); \
 	}
 
 	void printLn(std::string msg, const std::string& color = Color::white);
