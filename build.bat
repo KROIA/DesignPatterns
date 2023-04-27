@@ -1,3 +1,4 @@
+@echo off
 set buildFolder=build
 
 REM Speichere den aktuellen Pfad ab
@@ -29,4 +30,18 @@ cmake -DRELATIVE_BUILD_FOLDER="%buildFolder%" -DCMAKE_BUILD_TYPE=%buildType% -DC
 REM cmake Befehl fürs kompilieren
 cmake --build . --config %buildType% --target install
 
+if %errorlevel% neq 0 (
+    CALL:ECHORED "Build failed!"
+    pause
+) else (
+    CALL:ECHOGREEN "Build successful!"
+)
+EXIT /B 0
 
+:ECHORED
+%Windir%\System32\WindowsPowerShell\v1.0\Powershell.exe write-host -foregroundcolor Red %1
+EXIT /B 0
+
+:ECHOGREEN
+%Windir%\System32\WindowsPowerShell\v1.0\Powershell.exe write-host -foregroundcolor Green %1
+EXIT /B 0
