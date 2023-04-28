@@ -27,6 +27,7 @@ namespace DesignPatterns
         Object* getObject(size_t id) const;
         Object* operator[](size_t id) const;
 
+        void reserve(size_t capacity);
         size_t getObjectCount() const;
         void clear();
 

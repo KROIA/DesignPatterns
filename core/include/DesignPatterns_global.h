@@ -23,6 +23,12 @@
 # define DESIGN_PATTERNS_EXPORT
 #endif
 
+#ifndef __GNUC__
+#define __PRETTY_FUNCTION__ __FUNCSIG__
+#endif
+
+
+
 namespace DesignPatterns
 {
 	struct DESIGN_PATTERNS_EXPORT Info

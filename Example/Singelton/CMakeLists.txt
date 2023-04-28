@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.1.0)
 
-# Change the name of the Project here
-set(ProjectName Singelton)
+cmake_path(GET CMAKE_CURRENT_SOURCE_DIR FILENAME ProjectName)   
+string(REPLACE " " "_" ProjectId ${ProjectName})
+project(${ProjectName})
 
 project(${ProjectName})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${ProjectName}")

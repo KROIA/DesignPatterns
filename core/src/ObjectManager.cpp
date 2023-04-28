@@ -6,7 +6,9 @@ namespace DesignPatterns
 
     ObjectManager::ObjectManager()
         : m_lastError(Error::none)
-    {}
+    {
+       
+    }
     ObjectManager::~ObjectManager()
     {
         clear();
@@ -28,7 +30,8 @@ namespace DesignPatterns
             m_lastError = Error::object_is_nullptr;
             return false;
         }
-        size_t id = obj->getID();
+        Object& objRef = *obj;
+        size_t id = objRef.getID();
         auto it = m_objects.find(id);
         if (it != m_objects.end())
         {
@@ -40,13 +43,14 @@ namespace DesignPatterns
             m_lastError = Error::object_with_ID_already_exists;
             return false;
         }
-        ObjectManager* otherManager = obj->getManager();
+        /*ObjectManager* otherManager = obj->getManager();
         if (otherManager && otherManager != this)
         {
             obj->freeFromManager();
-        }
+        }*/
+        objRef.freeFromManager();
         m_objects[id] = obj;
-        obj->setManager(this);
+        objRef.setManager(this);
         return true;
     }
     bool ObjectManager::removeObject(size_t id)
@@ -72,7 +76,13 @@ namespace DesignPatterns
     }
     Object* ObjectManager::getObject(size_t id) const 
     {
-        return this->operator[](id);
+        auto it = m_objects.find(id);
+        if (it != m_objects.end()) {
+            return it->second;
+        }
+        m_lastError = Error::no_object_with_such_id;
+        return nullptr;
+        //return this->operator[](id);
     }
     Object* ObjectManager::operator[](size_t id) const
     {
@@ -82,6 +92,10 @@ namespace DesignPatterns
         }
         m_lastError = Error::no_object_with_such_id;
         return nullptr;
+    }
+    void ObjectManager::reserve(size_t capacity)
+    {
+        m_objects.reserve(capacity);
     }
     size_t ObjectManager::getObjectCount() const
     {
