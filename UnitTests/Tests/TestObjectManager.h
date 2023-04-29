@@ -42,12 +42,12 @@ private:
 	bool test_performance_objectSearch();
 	bool test_performance_objectRemove();
 
-	DesignPatterns::ObjectManager m_manager;
+	Utilities::ObjectManager m_manager;
 	size_t m_objectCount;
 };
 
 
-class Object1 : public DesignPatterns::Object
+class Object1 : public Utilities::Object
 {
 public:
 	Object1(Object::ID id, int val)
@@ -56,7 +56,7 @@ public:
 	{
 
 	}
-	Object1(DesignPatterns::ObjectManager& manager, int val)
+	Object1(Utilities::ObjectManager& manager, int val)
 		: Object(manager)
 		, value(val)
 	{
@@ -70,10 +70,10 @@ private:
 
 	int value;
 };
-class Object2 : public DesignPatterns::Object
+class Object2 : public Utilities::Object
 {
 public:
-	Object2(DesignPatterns::ObjectManager& manager, const std::string& text)
+	Object2(Utilities::ObjectManager& manager, const std::string& text)
 		: Object(manager)
 		, text(text)
 	{
@@ -168,7 +168,7 @@ void TestObjectManager::saveBatchedAsCSV(const std::vector<T>& values, size_t ba
 
 bool TestObjectManager::test_fillManager()
 {
-	DesignPatterns::ObjectManager manager;
+	Utilities::ObjectManager manager;
 
 	Object1* o1_1 = new Object1(manager, 1);
 	Object1* o1_2 = new Object1(manager, 2);
@@ -190,7 +190,7 @@ bool TestObjectManager::test_fillManager()
 }
 bool TestObjectManager::test_getObjects()
 {
-	DesignPatterns::ObjectManager manager;
+	Utilities::ObjectManager manager;
 
 	Object1* o1_1 = new Object1(manager, 1);
 	Object1* o1_2 = new Object1(manager, 2);
@@ -217,7 +217,7 @@ bool TestObjectManager::test_removeObject()
 	Object2* o2_2 = nullptr;
 	Object2* o2_3 = nullptr;
 	{
-		DesignPatterns::ObjectManager manager;
+		Utilities::ObjectManager manager;
 
 		Object1* o1_1 = new Object1(manager, 1);
 		Object1* o1_2 = new Object1(manager, 2);
@@ -266,7 +266,7 @@ bool TestObjectManager::test_removeObject()
 }
 bool TestObjectManager::test_doubleInsert()
 {
-	DesignPatterns::ObjectManager manager;
+	Utilities::ObjectManager manager;
 
 	Object1* o1_1 = new Object1(manager, 1);
 	Object1* o1_2 = new Object1(manager, 2);
@@ -295,7 +295,7 @@ bool TestObjectManager::test_performance_objectAdd()
 	objs.reserve(objectCount);
 	{
 		print("Instantiate " + std::to_string(objectCount) + " objects... ", Color::yellow);
-		DesignPatterns::PerformanceTimer timer;
+		Utilities::PerformanceTimer timer;
 		timer.start();
 		for (size_t i = 0; i < objectCount; ++i)
 		{
@@ -312,7 +312,7 @@ bool TestObjectManager::test_performance_objectAdd()
 	{
 		clock_t t1 = clock();
 		{
-			DesignPatterns::PerformanceTimer timer(timeNanos);
+			Utilities::PerformanceTimer timer(timeNanos);
 			ASSERT_FALSE(m_manager.addObject(objs[i]), "Object with ID: " + std::to_string(objs[i]->getID()));
 		}
 		times.push_back(timeNanos);
@@ -334,12 +334,12 @@ bool TestObjectManager::test_performance_objectSearch()
 	print("Search objects in manager... ", Color::yellow);
 	for (size_t i = 0; i < searches; ++i)
 	{
-		DesignPatterns::Object::ID searchedID = rand() % objectCount;
+		Utilities::Object::ID searchedID = rand() % objectCount;
 		{
-			DesignPatterns::PerformanceTimer timer(timeNanos);
-			DesignPatterns::Object* obj = m_manager.getObject(searchedID);
+			Utilities::PerformanceTimer timer(timeNanos);
+			Utilities::Object* obj = m_manager.getObject(searchedID);
 			ASSERT_EQUAL(obj, nullptr, "");
-			ASSERT_NEQUAL(obj->getID(), searchedID);
+			ASSERT_NEQUAL(obj->getID(), searchedID, "");
 		}
 		times.push_back(timeNanos);
 		timeNanosSum += timeNanos;

@@ -37,8 +37,8 @@ set(SOURCES
 add_executable(${ProjectName}-s ${SOURCES})
 add_executable(${ProjectName} ${SOURCES})
 
-target_link_libraries(${ProjectName}-s DesignPatterns_static)
-target_link_libraries(${ProjectName} DesignPatterns_shared)
+target_link_libraries(${ProjectName}-s Utilities_static)
+target_link_libraries(${ProjectName} Utilities_shared)
 target_compile_definitions(${ProjectName}-s PUBLIC BUILD_STATIC)
 
 set_target_properties(${ProjectName}-s PROPERTIES DEBUG_POSTFIX "-d" )

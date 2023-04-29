@@ -23,7 +23,7 @@ private:
 
 
 // Create a new Singelton class
-class Singelton_1 : public DesignPatterns::Singleton<Singelton_1> // Uses the classname as template param
+class Singelton_1 : public Utilities::Singleton<Singelton_1> // Uses the classname as template param
 {
 public:
 	const std::string& getName()
@@ -43,7 +43,7 @@ private:
 	// Some data inside the Singelton
 	std::string m_name;
 };
-class Singelton_2 : public DesignPatterns::Singleton<Singelton_2>
+class Singelton_2 : public Utilities::Singleton<Singelton_2>
 {
 public:
 	static std::string getName()
@@ -67,7 +67,7 @@ bool TestSingelton::test_access()
 	printLn("Singelton_1.getName(): " + instance.getName());
 	printLn("Singelton_2.getName(): " + Singelton_2::getName());
 
-	ASSERT_TRUE(std::string(instance.getName()).size() == 0);
-	ASSERT_TRUE(std::string(Singelton_2::getName()).size() == 0);
+	ASSERT_TRUE(std::string(instance.getName()).size() == 0, "");
+	ASSERT_TRUE(std::string(Singelton_2::getName()).size() == 0, "");
 	return true;
 }

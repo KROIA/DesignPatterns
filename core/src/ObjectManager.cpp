@@ -1,6 +1,6 @@
 #include "ObjectManager.h"
 
-namespace DesignPatterns
+namespace Utilities
 {
     Object::ID ObjectManager::m_nextId = 0;
 

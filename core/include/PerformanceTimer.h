@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DesignPatterns_global.h"
+#include "Utilities_global.h"
 #include <chrono>
 
 // MSVC Compiler
@@ -11,12 +11,12 @@ typedef std::chrono::steady_clock::time_point TimePoint;
 typedef std::chrono::system_clock::time_point TimePoint;
 #endif
 
-namespace DesignPatterns
+namespace Utilities
 {
     /**
      *  @brief A class for measuring performance time.
      */
-    class DESIGN_PATTERNS_EXPORT PerformanceTimer
+    class UTILITIES_EXPORT PerformanceTimer
     {
         public:
         /*

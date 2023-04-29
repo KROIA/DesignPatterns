@@ -1,7 +1,7 @@
 #pragma once
-#include "DesignPatterns_global.h"
+#include "Utilities_global.h"
 
-namespace DesignPatterns
+namespace Utilities
 {
     /**
      *  @brief A template class for creating singleton objects.

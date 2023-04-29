@@ -1,14 +1,14 @@
 #pragma once
 #include <unordered_map>
-#include "DesignPatterns_global.h"
+#include "Utilities_global.h"
 #include "Object.h"
 
-namespace DesignPatterns
+namespace Utilities
 {
     /**
      * @brief The ObjectManager class is responsible for managing all objects in the system.
      */
-    class DESIGN_PATTERNS_EXPORT ObjectManager {
+    class UTILITIES_EXPORT ObjectManager {
     public:
         /**
          * @brief Enumeration of possible errors that can occur while interacting with the object manager.
@@ -104,7 +104,7 @@ namespace DesignPatterns
         /**
          * @brief An iterator for the object manager.
          */
-        class DESIGN_PATTERNS_EXPORT iterator : public std::iterator<std::input_iterator_tag, Object*> 
+        class UTILITIES_EXPORT iterator : public std::iterator<std::input_iterator_tag, Object*> 
         {
         private:
             typename std::unordered_map<Object::ID, Object*>::iterator it;

@@ -1,7 +1,7 @@
 #include "Object.h"
 #include "ObjectManager.h"
 
-namespace DesignPatterns
+namespace Utilities
 {
     Object::Object(ID id)
         : m_manager(nullptr)

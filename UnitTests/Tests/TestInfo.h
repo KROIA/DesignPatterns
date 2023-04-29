@@ -18,15 +18,15 @@ private:
 
 bool TestInfo::test_printInfo()
 {
-	printLn(std::string("Version:    ") + DesignPatterns::Info::version);
-	printLn(std::string("Autor:      ") + DesignPatterns::Info::autor);
-	printLn(std::string("Date:       ") + DesignPatterns::Info::date);
-	printLn(std::string("Build Type: ") + DesignPatterns::Info::buildType);
+	printLn(std::string("Version:    ") + Utilities::Info::version);
+	printLn(std::string("Autor:      ") + Utilities::Info::autor);
+	printLn(std::string("Date:       ") + Utilities::Info::date);
+	printLn(std::string("Build Type: ") + Utilities::Info::buildType);
 
-	ASSERT_TRUE(std::string(DesignPatterns::Info::version).size() == 0)
-	ASSERT_TRUE(std::string(DesignPatterns::Info::autor).size() == 0)
-	ASSERT_TRUE(std::string(DesignPatterns::Info::date).size() == 0)
-	ASSERT_TRUE(std::string(DesignPatterns::Info::buildType).size() == 0)
+	ASSERT_TRUE(std::string(Utilities::Info::version).size() == 0, "")
+	ASSERT_TRUE(std::string(Utilities::Info::autor).size() == 0, "")
+	ASSERT_TRUE(std::string(Utilities::Info::date).size() == 0, "")
+	ASSERT_TRUE(std::string(Utilities::Info::buildType).size() == 0, "")
 
 	return true;
 }

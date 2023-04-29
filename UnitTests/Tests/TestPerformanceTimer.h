@@ -43,7 +43,7 @@ private:
 
 bool TestPerformanceTimer::test_startStop()
 {
-	DesignPatterns::PerformanceTimer timer;
+	Utilities::PerformanceTimer timer;
 
 	size_t testCount = 10;
 	size_t millisMin = 5;
@@ -70,7 +70,7 @@ bool TestPerformanceTimer::test_startStop()
 }
 bool TestPerformanceTimer::test_elapsed()
 {
-	DesignPatterns::PerformanceTimer timer;
+	Utilities::PerformanceTimer timer;
 
 	size_t repetitions = 5;
 	size_t testCount = 10;
@@ -101,7 +101,7 @@ bool TestPerformanceTimer::test_elapsed()
 }
 bool TestPerformanceTimer::test_paused()
 {
-	DesignPatterns::PerformanceTimer timer;
+	Utilities::PerformanceTimer timer;
 
 	long long repetitions = 5;
 	size_t testCount = 10;
@@ -133,7 +133,7 @@ bool TestPerformanceTimer::test_paused()
 }
 bool TestPerformanceTimer::test_restart()
 {
-	DesignPatterns::PerformanceTimer timer;
+	Utilities::PerformanceTimer timer;
 
 	size_t testCount = 10;
 	size_t millisMin = 5;
@@ -174,7 +174,7 @@ bool TestPerformanceTimer::test_scope()
 		long long listener = 0;
 		double compareTo = 0;
 		{
-			DesignPatterns::PerformanceTimer timer(listener);
+			Utilities::PerformanceTimer timer(listener);
 			timer.start();
 			compareTo = preciseSleep(millis);
 		}
@@ -192,10 +192,10 @@ bool TestPerformanceTimer::test_scope()
 
 		double compareTo = 0;
 		try {
-			DesignPatterns::PerformanceTimer* timer = nullptr;
+			Utilities::PerformanceTimer* timer = nullptr;
 			{
 				long long listener = 0;
-				timer = new DesignPatterns::PerformanceTimer(listener);
+				timer = new Utilities::PerformanceTimer(listener);
 				timer->start();
 				compareTo = preciseSleep(millis);
 			}

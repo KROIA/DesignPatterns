@@ -5,7 +5,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "DesignPatterns.h"
+#include "Utilities.h"
 #include "Test.h"
 #include "TestRunner.h"
 
@@ -25,10 +25,10 @@ namespace Example
 
 		std::cout << "+----------------------------------------------------\n";
 		std::cout << "| Library info:\n";
-		std::cout << "|   Version:    " << DesignPatterns::Info::version << "\n";
-		std::cout << "|   Autor:      " << DesignPatterns::Info::autor << "\n";
-		std::cout << "|   Date:       " << DesignPatterns::Info::date << "\n";
-		std::cout << "|   Build Type: " << DesignPatterns::Info::buildType << "\n";
+		std::cout << "|   Version:    " << Utilities::Info::version << "\n";
+		std::cout << "|   Autor:      " << Utilities::Info::autor << "\n";
+		std::cout << "|   Date:       " << Utilities::Info::date << "\n";
+		std::cout << "|   Build Type: " << Utilities::Info::buildType << "\n";
 		std::cout << "+----------------------------------------------------\n";
 	}
 }

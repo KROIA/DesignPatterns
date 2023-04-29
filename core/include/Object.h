@@ -1,13 +1,13 @@
 #pragma once
-#include "DesignPatterns_global.h"
+#include "Utilities_global.h"
 
-namespace DesignPatterns
+namespace Utilities
 {
   /**
    * @brief The Object class is a base class for all objects in the system.
    *        It has a unique ID associated with each instance.
    */
-    class DESIGN_PATTERNS_EXPORT Object {
+    class UTILITIES_EXPORT Object {
         friend ObjectManager;
     public:
         /**
