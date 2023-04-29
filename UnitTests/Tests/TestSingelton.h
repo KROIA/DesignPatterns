@@ -1,10 +1,26 @@
+#pragma once
+#include "../Test.h"
 #include "../exampleHelper.h"
 
-const Example::Info Example::info =
+
+class Singelton_1;
+class Singelton_2;
+
+
+class TestSingelton : public UnitTest::Test
 {
-	"Singelton",
-	"This is a example to show the usage of the singelton template"
+public:
+	TestSingelton()
+		: UnitTest::Test()
+	{
+		setName("TestSingelton");
+
+		ADD_TEST(test_access);
+	}
+private:
+	bool test_access();
 };
+
 
 // Create a new Singelton class
 class Singelton_1 : public DesignPatterns::Singleton<Singelton_1> // Uses the classname as template param
@@ -44,15 +60,14 @@ private:
 	std::string m_name;
 };
 
-int main(int argc, char* argv[])
+
+bool TestSingelton::test_access()
 {
-	Example::init();
-
 	Singelton_1& instance = Singelton_1::getInstance();
-	std::cout << "Singelton_1.getName(): " << instance.getName() << "\n";
+	printLn("Singelton_1.getName(): " + instance.getName());
+	printLn("Singelton_2.getName(): " + Singelton_2::getName());
 
-	std::cout << "Singelton_2.getName(): " << Singelton_2::getName() << "\n";
-
-	getchar();
-	return 0;
+	ASSERT_TRUE(std::string(instance.getName()).size() == 0);
+	ASSERT_TRUE(std::string(Singelton_2::getName()).size() == 0);
+	return true;
 }

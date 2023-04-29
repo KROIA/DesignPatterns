@@ -27,6 +27,6 @@ link_directories(${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
 # Add core as subdir, core contains the library
 add_subdirectory(core)
-add_subdirectory(Example)
+add_subdirectory(UnitTests)
 
 

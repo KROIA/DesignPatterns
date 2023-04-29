@@ -6,6 +6,8 @@
 #include <iostream>
 
 #include "DesignPatterns.h"
+#include "Test.h"
+#include "TestRunner.h"
 
 namespace Example
 {
@@ -30,7 +32,7 @@ namespace Example
 		std::cout << "+----------------------------------------------------\n";
 	}
 }
-
+/*
 namespace UnitTest
 {
 	namespace Result
@@ -171,3 +173,4 @@ namespace UnitTest
 			std::cout << "\n";
 	}
 }
+*/

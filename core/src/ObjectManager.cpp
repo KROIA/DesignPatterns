@@ -2,7 +2,7 @@
 
 namespace DesignPatterns
 {
-    size_t ObjectManager::m_nextId = 0;
+    Object::ID ObjectManager::m_nextId = 0;
 
     ObjectManager::ObjectManager()
         : m_lastError(Error::none)
@@ -14,7 +14,7 @@ namespace DesignPatterns
         clear();
     }
 
-    size_t ObjectManager::generateID() 
+    Object::ID ObjectManager::generateID()
     {
         size_t id = m_nextId++;
         while (m_objects.count(id) != 0) {
@@ -53,7 +53,7 @@ namespace DesignPatterns
         objRef.setManager(this);
         return true;
     }
-    bool ObjectManager::removeObject(size_t id)
+    bool ObjectManager::removeObject(Object::ID id)
     {
         auto it = m_objects.find(id);
         if (it != m_objects.end())
@@ -67,14 +67,14 @@ namespace DesignPatterns
         }
         return false;
     }
-    bool ObjectManager::exists(size_t id)
+    bool ObjectManager::exists(Object::ID id)
     {
         auto it = m_objects.find(id);
         if (it != m_objects.end())
             return true;
         return false;
     }
-    Object* ObjectManager::getObject(size_t id) const 
+    Object* ObjectManager::getObject(Object::ID id) const
     {
         auto it = m_objects.find(id);
         if (it != m_objects.end()) {
@@ -84,7 +84,7 @@ namespace DesignPatterns
         return nullptr;
         //return this->operator[](id);
     }
-    Object* ObjectManager::operator[](size_t id) const
+    Object* ObjectManager::operator[](Object::ID id) const
     {
         auto it = m_objects.find(id);
         if (it != m_objects.end()) {
@@ -122,7 +122,12 @@ namespace DesignPatterns
         m_lastError = Error::none;
     }
 
-    ObjectManager::iterator::iterator(typename std::unordered_map<size_t, Object*>::iterator iter) : it(iter) {}
+    ObjectManager::iterator::iterator(typename std::unordered_map<Object::ID, Object*>::iterator iter) 
+        : 
+        it(iter) 
+    {
+
+    }
 
     ObjectManager::iterator ObjectManager::iterator::operator++() {
         ++it;

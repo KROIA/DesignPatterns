@@ -3,13 +3,13 @@
 
 namespace DesignPatterns
 {
-    Object::Object(size_t id)
+    Object::Object(ID id)
         : m_manager(nullptr)
         , m_id(id)
     {
 
     }
-    Object::Object(ObjectManager& manager, size_t id)
+    Object::Object(ObjectManager& manager, ID id)
         : m_manager(&manager)
         , m_id(id) 
     {
@@ -32,7 +32,7 @@ namespace DesignPatterns
         notifyDelete();
     }
 
-    size_t Object::getID() const 
+    Object::ID Object::getID() const
     {
         return m_id;
     }

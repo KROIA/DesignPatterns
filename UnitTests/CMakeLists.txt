@@ -24,14 +24,12 @@ MACRO(FILE_DIRECTORIES return_list ending)
 ENDMACRO()
 
 
-
 # Get all source files
 FILE_DIRECTORIES(H_FILES *.h)
 FILE_DIRECTORIES(CPP_FILES *.cpp)
 
 # Combine headers and cources
 set(SOURCES
-    ../exampleHelper.h
     ${CPP_FILES}
     ${H_FILES}
 )

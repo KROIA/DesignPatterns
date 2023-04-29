@@ -1,4 +1,5 @@
-
+#pragma once
+#include "../Test.h"
 #include "../exampleHelper.h"
 #include <thread>
 #include <random>
@@ -9,14 +10,6 @@
 #else
 #include <unistd.h>
 #endif
-
-
-const Example::Info Example::info = 
-{
-	"Info",
-	"This is a example to use the performance timer"
-};
-
 long long preciseSleep(long long millis)
 {
 	auto t1 = std::chrono::high_resolution_clock::now();
@@ -25,30 +18,30 @@ long long preciseSleep(long long millis)
 	return std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count();
 }
 
-bool test_startStop();
-bool test_elapsed();
-bool test_paused();
-bool test_restart();
-bool test_scope();
-
-int main(int argc, char* argv[])
+class TestPerformanceTimer: public UnitTest::Test
 {
-	Example::init();
-	UnitTest::reset();
+public:
+	TestPerformanceTimer()
+	{
+		setName("TestPerformanceTimer");
 
-	TEST_RUN(test_startStop);
-	TEST_RUN(test_elapsed);
-	TEST_RUN(test_paused);
-	TEST_RUN(test_restart);
-	TEST_RUN(test_scope);
+		ADD_TEST(test_startStop);
+		ADD_TEST(test_elapsed);
+		ADD_TEST(test_paused);
+		ADD_TEST(test_restart);
+		ADD_TEST(test_scope);
+	}
+private:
+	bool test_startStop();
+	bool test_elapsed();
+	bool test_paused();
+	bool test_restart();
+	bool test_scope();
+};
 
 
-	UnitTest::printResults();
-	getchar();
-	return 0;
-}
 
-bool test_startStop()
+bool TestPerformanceTimer::test_startStop()
 {
 	DesignPatterns::PerformanceTimer timer;
 
@@ -75,7 +68,7 @@ bool test_startStop()
 	}
 	return true;
 }
-bool test_elapsed()
+bool TestPerformanceTimer::test_elapsed()
 {
 	DesignPatterns::PerformanceTimer timer;
 
@@ -106,7 +99,7 @@ bool test_elapsed()
 	}
 	return true;
 }
-bool test_paused()
+bool TestPerformanceTimer::test_paused()
 {
 	DesignPatterns::PerformanceTimer timer;
 
@@ -138,7 +131,7 @@ bool test_paused()
 	}
 	return true;
 }
-bool test_restart()
+bool TestPerformanceTimer::test_restart()
 {
 	DesignPatterns::PerformanceTimer timer;
 
@@ -166,7 +159,7 @@ bool test_restart()
 	}
 	return true;
 }
-bool test_scope()
+bool TestPerformanceTimer::test_scope()
 {
 	size_t testCount = 30;
 	size_t millisMin = 5;
@@ -186,7 +179,7 @@ bool test_scope()
 			compareTo = preciseSleep(millis);
 		}
 		Sleep(millis);
-		double elapsed = listener / 1000.0;
+		double elapsed = listener / 1000000.0;
 		if (abs(elapsed - compareTo) > microDiffTolerance)
 		{
 			ASSERT("Timer is out of tolerance. Timer = " + std::to_string(elapsed) + "us. Delayed for: " + std::to_string(compareTo) + "ms");
@@ -196,7 +189,7 @@ bool test_scope()
 	for (size_t i = 0; i < testCount; ++i)
 	{
 		long long millis = distrib(gen);
-		
+
 		double compareTo = 0;
 		try {
 			DesignPatterns::PerformanceTimer* timer = nullptr;
@@ -210,14 +203,14 @@ bool test_scope()
 			delete timer;
 			timer = nullptr;
 		}
-		catch(std::runtime_error &e){
+		catch (std::runtime_error& e) {
 			ASSERT(e.what());
 		}
 		catch (...)
 		{
 			ASSERT("An unknown error occured");
 		}
-		
+
 	}
 	return true;
 }

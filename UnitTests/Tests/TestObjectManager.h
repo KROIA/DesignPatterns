@@ -1,66 +1,104 @@
+#pragma once
+#include "../Test.h"
 #include "../exampleHelper.h"
-#include "Object1.h"
-#include "Object2.h"
 #include <fstream>
 #include <vector>
 #include <string>
 
+class Object1;
+class Object2;
 
-const Example::Info Example::info =
+class TestObjectManager : public UnitTest::Test
 {
-	"ObjectManager",
-	"This is a example to show the usage of the ObjectManager"
+public:
+	TestObjectManager(size_t performanceObjectCount)
+		: UnitTest::Test()
+	{
+		m_objectCount = performanceObjectCount;
+		setName("TestObjectManager");
+
+		ADD_TEST(test_fillManager);
+		ADD_TEST(test_getObjects);
+		ADD_TEST(test_removeObject);
+		ADD_TEST(test_doubleInsert);
+		ADD_TEST(test_performance_objectAdd);
+		ADD_TEST(test_performance_objectSearch);
+		ADD_TEST(test_performance_objectRemove);
+	}
+private:
+	template<typename T>
+	void saveAsCSV(const std::vector<std::vector<T>>& data,
+		const std::vector<std::string>& headers,
+		const std::string& filename);
+	template<typename T>
+	void saveBatchedAsCSV(const std::vector<T>& values, size_t batchSize,
+		const std::string& unit, const std::string& filename); // unit (time, length ...)
+
+	bool test_fillManager();
+	bool test_getObjects();
+	bool test_removeObject();
+	bool test_doubleInsert();
+	bool test_performance_objectAdd();
+	bool test_performance_objectSearch();
+	bool test_performance_objectRemove();
+
+	DesignPatterns::ObjectManager m_manager;
+	size_t m_objectCount;
 };
 
-using std::cout;
-template<typename T>
-void saveAsCSV(const std::vector<std::vector<T>>& data, 
-			   const std::vector<std::string>& headers, 
-			   const std::string& filename);
-template<typename T>
-void saveBatchedAsCSV(const std::vector<T>& values, size_t batchSize,
-				      const std::string &unit, const std::string& filename); // unit (time, length ...)
 
-bool test_fillManager();
-bool test_getObjects();
-bool test_removeObject();
-bool test_doubleInsert();
-bool test_performance_objectAdd(DesignPatterns::ObjectManager &manager);
-bool test_performance_objectSearch(DesignPatterns::ObjectManager &manager);
-bool test_performance_objectRemove(DesignPatterns::ObjectManager &manager);
-
-
-int main(int argc, char* argv[])
+class Object1 : public DesignPatterns::Object
 {
-	Example::init();
-	UnitTest::reset();
+public:
+	Object1(Object::ID id, int val)
+		: Object(id)
+		, value(val)
+	{
 
-	
-	TEST_RUN(test_fillManager);
-	TEST_RUN(test_removeObject);
-	TEST_RUN(test_doubleInsert);
+	}
+	Object1(DesignPatterns::ObjectManager& manager, int val)
+		: Object(manager)
+		, value(val)
+	{
 
-	DesignPatterns::ObjectManager manager;
-	TEST_RUN(test_performance_objectAdd, manager);
-	TEST_RUN(test_performance_objectSearch, manager);
-	TEST_RUN(test_performance_objectRemove, manager);
+	}
+	int getValue()
+	{
+		return value;
+	}
+private:
 
+	int value;
+};
+class Object2 : public DesignPatterns::Object
+{
+public:
+	Object2(DesignPatterns::ObjectManager& manager, const std::string& text)
+		: Object(manager)
+		, text(text)
+	{
 
-	UnitTest::printResults();
-	getchar();
-	return 0;
-}
+	}
+	const std::string& getText()
+	{
+		return text;
+	}
+private:
+
+	std::string text;
+};
+
 
 template<typename T>
-void saveAsCSV(const std::vector<std::vector<T>>& data,
-	           const std::vector<std::string>& headers, 
-	           const std::string& filename) 
+void TestObjectManager::saveAsCSV(const std::vector<std::vector<T>>& data,
+	const std::vector<std::string>& headers,
+	const std::string& filename)
 {
-	UnitTest::print("Save file: "+filename, UnitTest::Color::white);
+	print("Save file: " + filename, Color::white);
 	std::ofstream file(filename);
 	if (!file.is_open())
 	{
-		UnitTest::printLn("  fail, can't open file", UnitTest::Color::red);
+		printLn("  fail, can't open file", Color::red);
 		return;
 	}
 
@@ -85,12 +123,12 @@ void saveAsCSV(const std::vector<std::vector<T>>& data,
 	}
 	file.close();
 
-	UnitTest::printLn("  done", UnitTest::Color::green);
+	printLn("  done", Color::green);
 }
 
 template<typename T>
-void saveBatchedAsCSV(const std::vector<T>& values, size_t batchSize,
-	                  const std::string& unit, const std::string& filename)
+void TestObjectManager::saveBatchedAsCSV(const std::vector<T>& values, size_t batchSize,
+	const std::string& unit, const std::string& filename)
 {
 	std::vector<T> batchedAverage;
 	std::vector<T> batchedMin;
@@ -124,11 +162,11 @@ void saveBatchedAsCSV(const std::vector<T>& values, size_t batchSize,
 	}
 
 
-	saveAsCSV<T>({ batchedMin, batchedMax, batchedAverage }, { "min "+ unit, "max "+ unit, "average "+ unit }, filename);
+	saveAsCSV<T>({ batchedMin, batchedMax, batchedAverage }, { "min " + unit, "max " + unit, "average " + unit }, filename);
 }
 
 
-bool test_fillManager()
+bool TestObjectManager::test_fillManager()
 {
 	DesignPatterns::ObjectManager manager;
 
@@ -147,10 +185,10 @@ bool test_fillManager()
 		ASSERT_NEQUAL(it->getID(), counter, "");
 		++counter;
 	}
-	
+
 	return true;
 }
-bool test_getObjects()
+bool TestObjectManager::test_getObjects()
 {
 	DesignPatterns::ObjectManager manager;
 
@@ -170,10 +208,10 @@ bool test_getObjects()
 	ASSERT_NEQUAL(nullptr, manager.getObject(1560), "");
 	ASSERT_FALSE(manager.exists(o2_3->getID()), "");
 	ASSERT_FALSE(manager.exists(o2_1->getID()), "");
-	
+
 	return true;
 }
-bool test_removeObject()
+bool TestObjectManager::test_removeObject()
 {
 	Object2* o2_1 = nullptr;
 	Object2* o2_2 = nullptr;
@@ -226,7 +264,7 @@ bool test_removeObject()
 
 	return true;
 }
-bool test_doubleInsert()
+bool TestObjectManager::test_doubleInsert()
 {
 	DesignPatterns::ObjectManager manager;
 
@@ -248,15 +286,15 @@ bool test_doubleInsert()
 	return true;
 }
 
-bool test_performance_objectAdd(DesignPatterns::ObjectManager &manager)
+bool TestObjectManager::test_performance_objectAdd()
 {
-	size_t objectCount = 100000000;
+	size_t objectCount = m_objectCount;
 	std::vector<double> times;
 	std::vector<Object1*> objs;
 	times.reserve(objectCount);
 	objs.reserve(objectCount);
 	{
-		UnitTest::print("Instantiate " + std::to_string(objectCount) + " objects... ", UnitTest::Color::yellow);
+		print("Instantiate " + std::to_string(objectCount) + " objects... ", Color::yellow);
 		DesignPatterns::PerformanceTimer timer;
 		timer.start();
 		for (size_t i = 0; i < objectCount; ++i)
@@ -264,42 +302,42 @@ bool test_performance_objectAdd(DesignPatterns::ObjectManager &manager)
 			objs.push_back(new Object1(i, 1));
 		}
 		timer.stop();
-		UnitTest::printLn("done. " + std::to_string(timer.elapsed_micros()) + "us", UnitTest::Color::green);
+		printLn("done. " + std::to_string(timer.elapsed_micros()) + "us", Color::green);
 	}
 
 	long long timeNanos = 0;
 	long long timeNanosSum = 0;
-	UnitTest::print("Fill manager... ", UnitTest::Color::yellow);
+	print("Fill manager... ", Color::yellow);
 	for (size_t i = 0; i < objs.size(); ++i)
-	{		
+	{
 		clock_t t1 = clock();
 		{
 			DesignPatterns::PerformanceTimer timer(timeNanos);
-			ASSERT_FALSE(manager.addObject(objs[i]), "Object with ID: "+std::to_string(objs[i]->getID()));
+			ASSERT_FALSE(m_manager.addObject(objs[i]), "Object with ID: " + std::to_string(objs[i]->getID()));
 		}
 		times.push_back(timeNanos);
 		timeNanosSum += timeNanos;
 		timeNanos = 0;
 	}
-	UnitTest::printLn("done. " + std::to_string(timeNanosSum*0.001) + "us", UnitTest::Color::green);
-	saveBatchedAsCSV(times, objectCount/100, "us", "test_performance_objectAdd.csv");
+	printLn("done. " + std::to_string(timeNanosSum * 0.001) + "us", Color::green);
+	saveBatchedAsCSV(times, objectCount / 100, "us", "test_performance_objectAdd.csv");
 	return true;
 }
-bool test_performance_objectSearch(DesignPatterns::ObjectManager& manager)
+bool TestObjectManager::test_performance_objectSearch()
 {
-	size_t objectCount = manager.getObjectCount();
-	size_t searches = 100000000;
+	size_t objectCount = m_manager.getObjectCount();
+	size_t searches = m_objectCount;
 
 	std::vector<double> times;
 	long long timeNanos = 0;
 	long long timeNanosSum = 0;
-	UnitTest::print("Search objects in manager... ", UnitTest::Color::yellow);
+	print("Search objects in manager... ", Color::yellow);
 	for (size_t i = 0; i < searches; ++i)
 	{
-		size_t searchedID = rand() % objectCount;
+		DesignPatterns::Object::ID searchedID = rand() % objectCount;
 		{
 			DesignPatterns::PerformanceTimer timer(timeNanos);
-			DesignPatterns::Object* obj = manager.getObject(searchedID);
+			DesignPatterns::Object* obj = m_manager.getObject(searchedID);
 			ASSERT_EQUAL(obj, nullptr, "");
 			ASSERT_NEQUAL(obj->getID(), searchedID);
 		}
@@ -307,11 +345,12 @@ bool test_performance_objectSearch(DesignPatterns::ObjectManager& manager)
 		timeNanosSum += timeNanos;
 		timeNanos = 0;
 	}
-	UnitTest::printLn("done. " + std::to_string(timeNanosSum * 0.001) + "us", UnitTest::Color::green);
-	saveBatchedAsCSV(times, searches/100, "us", "test_performance_objectSearch.csv");
+	printLn("done. " + std::to_string(timeNanosSum * 0.001) + "us", Color::green);
+	saveBatchedAsCSV(times, searches / 100, "us", "test_performance_objectSearch.csv");
 	return true;
 }
-bool test_performance_objectRemove(DesignPatterns::ObjectManager& manager)
+bool TestObjectManager::test_performance_objectRemove()
 {
 	return true;
 }
+
