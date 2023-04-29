@@ -1,17 +1,15 @@
 #pragma once
 
+// Library metainfo
 #define DESIGN_PATTERNS_LIB_VERSION "00.00.00"
 #define   DESIGN_PATTERNS_LIB_AUTOR "Alex Krieg"
 #define    DESIGN_PATTERNS_LIB_DATE __DATE__
-
-
 
 #ifdef _DEBUG 
 #define DESIGN_PATTERNS_LIB_BUILD_TYPE "Debug"
 #else
 #define DESIGN_PATTERNS_LIB_BUILD_TYPE "Release"
 #endif
-
 
 #ifndef BUILD_STATIC
 # if defined(DESIGN_PATTERNS_LIB)

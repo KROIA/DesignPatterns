@@ -61,6 +61,13 @@ namespace DesignPatterns
 		m_endTime = std::chrono::high_resolution_clock::now();
 		m_accumulateNanos += std::chrono::duration_cast<std::chrono::nanoseconds>(m_endTime - m_startTime).count();
 		m_paused = true;
+		if (m_nanosOut)
+		{
+			try {
+				*m_nanosOut = m_accumulateNanos;
+			}
+			catch (...) {}
+		}
 	}
 	void PerformanceTimer::stop()
 	{
@@ -73,6 +80,13 @@ namespace DesignPatterns
 		}
 		m_paused = false;
 		m_running = false;
+		if (m_nanosOut)
+		{
+			try {
+				*m_nanosOut = m_accumulateNanos;
+			}
+			catch (...) {}
+		}
 	}
 
 	void PerformanceTimer::restart()
@@ -81,6 +95,13 @@ namespace DesignPatterns
 		m_running = true;
 		m_paused = false;
 		m_startTime = std::chrono::high_resolution_clock::now();
+		if (m_nanosOut)
+		{
+			try {
+				*m_nanosOut = m_accumulateNanos;
+			}
+			catch (...) {}
+		}
 	}
 
 	long long PerformanceTimer::elapsed_nanos() const
