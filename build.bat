@@ -4,6 +4,18 @@ set buildFolder=build
 REM Speichere den aktuellen Pfad ab
 set projectRootPath=%CD%
 
+REM Enable farbige Konsolenausgaben
+SETLOCAL EnableExtensions DisableDelayedExpansion
+for /F %%a in ('echo prompt $E ^| cmd') do (
+  set "ESC=%%a"
+)
+SETLOCAL EnableDelayedExpansion
+set RED=!ESC![31m
+set GREEN=!ESC![32m
+set YELLOW=!ESC![33m
+set WHITE=!ESC![37m
+set END_COLOR=!ESC![0m
+
 mkdir %buildFolder%
 cd %buildFolder%
 
@@ -11,7 +23,7 @@ REM Funktionsaufruf build(Debug, projectRootPath)
 CALL :build Debug, "%projectRootPath%"
 CALL :build Release, "%projectRootPath%"
 
-REM pause
+pause
 EXIT
 
 REM Funktionsdefinition
@@ -31,17 +43,13 @@ REM cmake Befehl fürs kompilieren
 cmake --build . --config %buildType% --target install
 
 if %errorlevel% neq 0 (
-    CALL:ECHORED "Build failed!"
+    CALL::ECHO_COLOR "Build failed!", %RED%
     pause
 ) else (
-    CALL:ECHOGREEN "Build successful!"
+    CALL::ECHO_COLOR "Build successful!", %GREEN%
 )
 EXIT /B 0
 
-:ECHORED
-%Windir%\System32\WindowsPowerShell\v1.0\Powershell.exe write-host -foregroundcolor Red %1
-EXIT /B 0
-
-:ECHOGREEN
-%Windir%\System32\WindowsPowerShell\v1.0\Powershell.exe write-host -foregroundcolor Green %1
+:ECHO_COLOR 
+echo %2 %1 %END_COLOR%
 EXIT /B 0
